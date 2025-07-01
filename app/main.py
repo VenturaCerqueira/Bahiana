@@ -1,9 +1,10 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware  # Certifique-se que esta linha existe
+from fastapi.middleware.cors import CORSMiddleware
 
+# --- AJUSTE DE IMPORTAÇÃO ---
 import app.model.models as models
-from app.database import engine, SessionLocal
-from routers import aluno
+from app.database.database import engine, SessionLocal
+from app.routers import aluno
 import app.seed.seed as seed
 
 # Cria as tabelas no banco de dados (se não existirem)
@@ -15,11 +16,9 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# ======== INÍCIO DA CONFIGURAÇÃO DO CORS ========
-# Este bloco DEVE vir ANTES de qualquer `app.include_router`
-
+# ======== CONFIGURAÇÃO DO CORS ========
 origins = [
-    "http://127.0.0.1:5500",  # Endereço do seu front-end (Live Server)
+    "http://127.0.0.1:5500",
     "http://localhost:5500",
 ]
 
@@ -27,21 +26,18 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Permite TODOS os métodos (GET, POST, OPTIONS, etc)
-    allow_headers=["*"],  # Permite TODOS os cabeçalhos
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-# ======== FIM DA CONFIGURAÇÃO DO CORS ========
-
-
-# Bloco para popular o banco de dados na inicialização
+# ======== SEED DO BANCO DE DADOS ========
 @app.on_event("startup")
 def on_startup():
     db = SessionLocal()
     seed.seed_db(db)
     db.close()
 
-# Inclui o roteador de alunos na aplicação principal
+# ======== INCLUSÃO DAS ROTAS ========
 app.include_router(aluno.router)
 
 @app.get("/", tags=["Root"])

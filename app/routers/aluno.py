@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-import crud, schemas
-from database import get_db
+
+# --- AJUSTE DE IMPORTAÇÃO ---
+from app.crud import crud
+from app.schemas import schemas
+from app.database.database import get_db
 
 router = APIRouter(prefix="/alunos", tags=["Alunos"])
 
 @router.post("/", response_model=schemas.Aluno, status_code=status.HTTP_201_CREATED)
 def create_aluno_endpoint(aluno: schemas.AlunoCreate, db: Session = Depends(get_db)):
-    # Verifica se já existe um aluno com o mesmo nome
     db_aluno = crud.get_aluno_by_name(db, nome=aluno.nome_aluno)
     if db_aluno:
         raise HTTPException(status_code=400, detail="Já existe um aluno com este nome.")
@@ -25,15 +27,13 @@ def read_aluno_endpoint(aluno_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Aluno não encontrado")
     return db_aluno
 
-# NOVO: Endpoint para buscar aluno pelo nome
 @router.get("/nome/{nome_aluno}", response_model=schemas.Aluno)
 def read_aluno_by_name_endpoint(nome_aluno: str, db: Session = Depends(get_db)):
     db_aluno = crud.get_aluno_by_name(db, nome=nome_aluno)
     if db_aluno is None:
         raise HTTPException(status_code=404, detail="Aluno não encontrado")
     return db_aluno
-    
-# ... (endpoints PUT e DELETE permanecem os mesmos, já com a exceção 404) ...
+
 @router.put("/{aluno_id}", response_model=schemas.Aluno)
 def update_aluno_endpoint(aluno_id: int, aluno: schemas.AlunoCreate, db: Session = Depends(get_db)):
     db_aluno = crud.update_aluno(db, aluno_id=aluno_id, aluno=aluno)
