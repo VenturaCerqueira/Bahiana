@@ -1,0 +1,36 @@
+/* Estilo geral do corpo da página */
+body {
+    background-color: #f0f2f5; /* Um cinza bem claro */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Garante que o conteúdo principal empurre o rodapé para baixo */
+.main-content {
+    flex: 1;
+}
+
+/* Estiliza os cabeçalhos dos cards */
+.card-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Adiciona um hover sutil nos botões de ação da tabela */
+.table .btn {
+    transition: all 0.2s ease-in-out;
+}
+
+.table .btn:hover {
+    transform: scale(1.1);
+}
+
+/* Deixa a fonte do Navbar um pouco maior */
+.navbar-brand {
+    font-weight: 500;
+}
+
+/* Define o rodapé */
+.footer {
+    flex-shrink: 0; /* Impede que o rodapé encolha */
+}

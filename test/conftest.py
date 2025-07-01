@@ -4,8 +4,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 # Importa a aplicação principal e as dependências
-from main import app
-from database import Base, get_db
+from app.main import app
+from app.database import Base, get_db
 
 # Configura um banco de dados de teste em memória
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"

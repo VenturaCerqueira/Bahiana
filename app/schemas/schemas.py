@@ -1,5 +1,6 @@
 from pydantic import BaseModel
-from typing import List
+
+# Não precisa de List aqui, pois não está a ser usado.
 
 class AlunoCreate(BaseModel):
     nome_aluno: str
@@ -9,5 +10,6 @@ class AlunoCreate(BaseModel):
 
 class Aluno(AlunoCreate):
     id: int
+
     class Config:
-        orm_mode = True
+        from_attributes = True # Correção de 'orm_mode' para 'from_attributes'

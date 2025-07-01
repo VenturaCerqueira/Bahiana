@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-import models, schemas
+import app.model.models as models, app.schemas.schemas as schemas
 
 def get_aluno(db: Session, aluno_id: int):
     return db.query(models.AlunoDB).filter(models.AlunoDB.id == aluno_id).first()

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-import crud, schemas
+import app.crud.crud as crud, app.schemas.schemas as schemas
 
 def seed_db(db: Session):
     # Verifica se o banco já tem dados
